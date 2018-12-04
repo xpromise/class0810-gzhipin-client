@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {NavBar, WingBlank, WhiteSpace, List, InputItem, Button } from 'antd-mobile';
+import {Redirect} from 'react-router-dom';
 
 import Logo from '../logo';
 
@@ -34,10 +35,17 @@ class Login extends Component {
   }
   
   render () {
+    const {errMsg, redirectTo} = this.props.user;
+  
+    if (redirectTo) {
+      return <Redirect to={redirectTo} />
+    }
+    
     return (
       <div>
         <NavBar>硅谷直聘</NavBar>
         <Logo />
+        <p className="err-msg">{errMsg}</p>
         <WingBlank>
           <List>
             <InputItem onChange={val => this.handleChange('username', val)}>用户名:</InputItem>
