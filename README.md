@@ -8,6 +8,7 @@
     * git commit -m 'xxx'
   * 将本地仓库和远程仓库关联起来
     * git remote add origin xxx
+    * git remote remove origin
 * 本地没有仓库，远程有仓库
   * 获取远程仓库地址，克隆到本地来
     * git clone xxx
@@ -30,3 +31,9 @@
     * git clone xxx
   * 问题：只有一个分支。想要其它分支的内容
     * git fetch origin dev:dev
+    
+## 2、代理服务器
+* 作用：解决开发时的跨域问题（生产环境还是需要cors或者jsonp等方案解决）
+* 配置
+  * 修改package.json，添加一个字段   proxy: 访问的服务器地址
+  * 将页面的请求地址都替换为  /xxx

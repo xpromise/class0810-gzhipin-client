@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {NavBar, WingBlank, WhiteSpace, List, InputItem, Radio, Button } from 'antd-mobile';
 
 import Logo from '../logo';
+import {reqRegister} from '../../api';
 
 const Item = List.Item;
 
@@ -48,11 +49,14 @@ class Register extends Component {
     })
   }
   
-  register = () => {
+  register = async () => {
     //收集表单数据
     const {laoban, password, rePassword, username} = this.state;
     //发送ajax
     console.log(laoban, password, rePassword, username);
+  
+    const user = await reqRegister({username, password, type: laoban ? 'laoban' : 'dashen'});
+    console.log(user);
   }
   
   goLogin = () => {
@@ -73,9 +77,9 @@ class Register extends Component {
           <List>
             <InputItem onChange={val => this.handleChange('username', val)}>用户名:</InputItem>
             <WhiteSpace />
-            <InputItem onChange={val => this.handleChange('password', val)}>密&nbsp;&nbsp;&nbsp;码:</InputItem>
+            <InputItem onChange={val => this.handleChange('password', val)} type="password">密&nbsp;&nbsp;&nbsp;码:</InputItem>
             <WhiteSpace />
-            <InputItem onChange={val => this.handleChange('rePassword', val)}>确认密码:</InputItem>
+            <InputItem onChange={val => this.handleChange('rePassword', val)} type="password">确认密码:</InputItem>
             <WhiteSpace />
             <Item>
               用户类型:  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
