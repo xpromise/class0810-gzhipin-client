@@ -1,12 +1,17 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import {NavBar, WingBlank, WhiteSpace, List, InputItem, Radio, Button } from 'antd-mobile';
 
 import Logo from '../logo';
-import {reqRegister} from '../../api';
 
 const Item = List.Item;
 
 class Register extends Component {
+  static propTypes = {
+    user: PropTypes.object.isRequired,
+    register: PropTypes.func.isRequired
+  }
+  
   state = {
     // isBossChecked: true,
     laoban: true,
@@ -54,9 +59,8 @@ class Register extends Component {
     const {laoban, password, rePassword, username} = this.state;
     //发送ajax
     console.log(laoban, password, rePassword, username);
-  
-    const user = await reqRegister({username, password, type: laoban ? 'laoban' : 'dashen'});
-    console.log(user);
+    //调用容器组件传递的更新状态的方法
+    this.props.register({type: laoban ? 'laoban' : 'dashen', password, rePassword, username});
   }
   
   goLogin = () => {

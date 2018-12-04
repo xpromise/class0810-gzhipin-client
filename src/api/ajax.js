@@ -29,16 +29,12 @@ export default async function (url, data, method = 'GET') {
   const type = method.toUpperCase();
   if (type === 'GET') {
     //发送请求
-    const result = await axios.get(url + '?' + qs);
-    //将请求成功的响应数据返回出去
-    return result.data;
+    return axios.get(url + '?' + qs);
   } else if (type === 'POST') {
     //发送请求
-    const result = await axios.post(url, qs, {
+    return axios.post(url, qs, {
       'content-type': 'application/x-www-form-urlencoded'
     });
-    //将请求成功的响应数据返回出去
-    return result.data;
   }
 
 }

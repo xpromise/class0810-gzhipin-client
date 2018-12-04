@@ -6,7 +6,7 @@ import {Provider} from 'react-redux';
 import store from './redux/store';
 
 import Login from './components/login';
-import Register from './components/register';
+import Register from './containers/register';
 import Main from './components/main';
 
 ReactDOM.render((
