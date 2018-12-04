@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {NavBar, WingBlank, WhiteSpace, List, InputItem, Radio, Button } from 'antd-mobile';
 
 import Logo from '../logo';
+import './index.less';
 
 const Item = List.Item;
 
@@ -73,10 +74,12 @@ class Register extends Component {
   
   render () {
     const {laoban} = this.state;
+    const {errMsg} = this.props.user;
     return (
       <div>
         <NavBar>硅谷直聘</NavBar>
         <Logo />
+        <p className="err-msg">{errMsg}</p>
         <WingBlank>
           <List>
             <InputItem onChange={val => this.handleChange('username', val)}>用户名:</InputItem>
