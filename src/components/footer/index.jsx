@@ -28,7 +28,8 @@ class Footer extends Component {
       <TabBar>
         {
           currNavList.map((item, index) => <Item
-            key={index} title={item.text}
+            key={index}
+            title={item.text}
             icon={<img className="footer-img" src={require(`./images/${item.icon}.png`)} alt={item.text}/>}
             onPress={this.redirectTo.bind(null, item.path)}
             selected={this.props.location.pathname === item.path}
