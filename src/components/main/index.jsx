@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Route} from 'react-router-dom';
 
-import LaobanInfo from '../laoban-info';
+import LaobanInfo from '../../containers/laoban-info';
 
 class Main extends Component {
   render () {

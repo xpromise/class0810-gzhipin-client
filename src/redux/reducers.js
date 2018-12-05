@@ -11,7 +11,12 @@ const initUserState = {
   type: '',
   _id: '',
   errMsg: '',
-  redirectTo: ''
+  redirectTo: '',
+  header: '',
+  post: '',
+  salary: '',
+  info: '',
+  company: ''
 };
 
 function user(previousState = initUserState, action) {

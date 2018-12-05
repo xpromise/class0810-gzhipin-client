@@ -76,6 +76,7 @@ class Register extends Component {
     const {laoban} = this.state;
     const {errMsg, redirectTo} = this.props.user;
   
+    //判断是否注册成功
     if (redirectTo) {
       //路由链接跳转
       return <Redirect to={redirectTo} />

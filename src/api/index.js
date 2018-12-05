@@ -14,3 +14,5 @@ const prefix = '';
 export const reqRegister = data => ajax(`${prefix}/register`, data, 'POST');
 //定义登录的请求
 export const reqLogin = data => ajax(`${prefix}/login`, data, 'POST');
+//定义更新用户信息的请求
+export const reqUpdate = data => ajax(`${prefix}/update`, data, 'POST');
