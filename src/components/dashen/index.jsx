@@ -2,21 +2,19 @@ import React, {Component} from 'react';
 import { Card, WingBlank, WhiteSpace } from 'antd-mobile';
 import PropTypes from 'prop-types';
 
-class Laoban extends Component {
+class Dashen extends Component {
   static propTypes = {
     userList: PropTypes.array.isRequired,
     getUserList: PropTypes.func.isRequired
   }
   
   componentDidMount () {
-    //防止二次请求相同的数据
     if (!this.props.userList.length) {
-      this.props.getUserList('dashen');
+      this.props.getUserList('laoban');
     }
   }
   
   render () {
-    //过滤掉没有头像等数据的对象
     const userList = this.props.userList.filter(item => item.header);
     
     return (
@@ -33,6 +31,8 @@ class Laoban extends Component {
                     />
                     <Card.Body>
                       <div>职位：{item.post}</div>
+                      <div>公司：{item.company}</div>
+                      <div>月薪：{item.salary}</div>
                       <div>描述：{item.info}</div>
                     </Card.Body>
                   </Card>
@@ -46,4 +46,4 @@ class Laoban extends Component {
   }
 }
 
-export default Laoban;
+export default Dashen;

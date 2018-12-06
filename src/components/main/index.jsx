@@ -8,6 +8,7 @@ import PropTypes from 'prop-types';
 import LaobanInfo from '../../containers/laoban-info';
 import DashenInfo from '../../containers/dashen-info';
 import Laoban from '../../containers/laoban';
+import Dashen from '../../containers/dashen';
 import Message from '../message';
 import Personal from '../personal';
 import Footer from '../footer';
@@ -66,6 +67,7 @@ class Main extends Component {
           <Route path="/laobaninfo" component={LaobanInfo}/>
           <Route path="/dasheninfo" component={DashenInfo}/>
           <Route path="/laoban" component={Laoban}/>
+          <Route path="/dashen" component={Dashen}/>
           <Route path="/message" component={Message}/>
           <Route path="/personal" component={Personal}/>
         </div>
