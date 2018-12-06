@@ -6,11 +6,14 @@
     2. 异步action creator
       返回值是函数 dispatch => {xxx}
  */
-import {reqRegister, reqLogin, reqUpdate} from '../api';
-import {AUTH_SUCCESS, AUTH_ERROR} from './action-types';
+import {reqRegister, reqLogin, reqUpdate, reqGetUserInfo} from '../api';
+import {AUTH_SUCCESS, AUTH_ERROR, UPDATE_USER_INFO, RESET_USER_INFO} from './action-types';
 //定义同步action creator
 export const authSuccess = data => ({type: AUTH_SUCCESS, data});
 export const authError = data => ({type: AUTH_ERROR, data});
+
+export const updateUserInfo = data => ({type: UPDATE_USER_INFO, data});
+export const resetUserInfo = data => ({type: RESET_USER_INFO, data});
 
 //定义异步action creator
 export const register = ({username, password, rePassword, type}) => {
@@ -102,4 +105,20 @@ export const update = ({header, post, company, salary, info, type}) => {
       })
   }
   
+}
+
+export const getUserInfo = () => {
+  return dispatch => {
+    reqGetUserInfo()
+      .then(({data}) => {
+        if (data.code === 0) {
+          dispatch(updateUserInfo(data.data));
+        } else {
+          dispatch(resetUserInfo({errMsg: data.msg}))
+        }
+      })
+      .catch(err => {
+        dispatch(resetUserInfo({errMsg: '网络不稳定，请刷新试试~'}))
+      })
+  }
 }

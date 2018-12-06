@@ -3,7 +3,7 @@
  */
 import {combineReducers} from 'redux';
 
-import {AUTH_SUCCESS, AUTH_ERROR} from './action-types';
+import {AUTH_SUCCESS, AUTH_ERROR, UPDATE_USER_INFO, RESET_USER_INFO} from './action-types';
 
 //初始化状态的值
 const initUserState = {
@@ -25,6 +25,10 @@ function user(previousState = initUserState, action) {
       return {...action.data, redirectTo: getRedirectPath(action.data.type, action.data.header)};
     case AUTH_ERROR :
       return {...initUserState, ...action.data};
+    case UPDATE_USER_INFO :
+      return {...action.data, redirectTo: getRedirectPath(action.data.type, action.data.header)};
+    case RESET_USER_INFO :
+      return {...initUserState, ...action.data}
     default :
       return previousState;
   }
