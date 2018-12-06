@@ -1,27 +1,45 @@
 import React, {Component} from 'react';
-import { Card, WingBlank, WhiteSpace } from 'antd-mobile';
+import { Card, WingBlank, WhiteSpace, ListView } from 'antd-mobile';
+import PropTypes from 'prop-types';
 
 class Laoban extends Component {
+  static propTypes = {
+    userList: PropTypes.array.isRequired,
+    getUserList: PropTypes.func.isRequired
+  }
+  
+  componentDidMount () {
+    if (!this.props.userList.length) {
+      this.props.getUserList('dashen');
+    }
+  }
+  
   render () {
+    const userList = this.props.userList.filter(item => item.header);
+    
     return (
-      <div>
-        <WingBlank size="lg">
+        <WingBlank>
           <WhiteSpace size="lg" />
-          <Card>
-            <Card.Header
-              thumb={require('../../assets/images/头像1.png')}
-              extra={<span>laoban001</span>}
-            />
-            <Card.Body>
-              <div>职位：xxx</div>
-              <div>公司：xxx</div>
-              <div>薪资：xxx</div>
-              <div>描述：xxx</div>
-            </Card.Body>
-          </Card>
-          <WhiteSpace size="lg" />
-        </WingBlank>
-      </div>
+          {
+            userList.map((item, index) => {
+              return (
+                <div key={index}>
+                  <Card >
+                    <Card.Header
+                      thumb={require(`../../assets/images/头像${+item.header + 1}.png`)}
+                      extra={<span>{item.username}</span>}
+                    />
+                    <Card.Body>
+                      <div>职位：{item.post}</div>
+                      <div>描述：{item.info}</div>
+                    </Card.Body>
+                  </Card>
+                  <WhiteSpace size="lg" />
+                </div>
+              )
+            })
+          }
+      </WingBlank>
     )
   }
 }

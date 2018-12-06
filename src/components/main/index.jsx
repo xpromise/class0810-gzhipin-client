@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 
 import LaobanInfo from '../../containers/laoban-info';
 import DashenInfo from '../../containers/dashen-info';
-import Laoban from '../laoban';
+import Laoban from '../../containers/laoban';
 import Message from '../message';
 import Personal from '../personal';
 import Footer from '../footer';
@@ -26,6 +26,7 @@ class Main extends Component {
     {path: '/message', title: '消息列表', icon: 'message', text: '消息'},
     {path: '/personal', title: '个人中心', icon: 'personal', text: '个人'},
   ]
+  
   
   render () {
     /*
@@ -56,17 +57,19 @@ class Main extends Component {
     
     //找到与当前路径匹配的对象
     const currNav = this.navList.find(item => item.path === pathname);
-    console.log(currNav);
+    // console.log(currNav);
     
     return (
       <div>
-        {currNav ? <NavBar>{currNav.title}</NavBar> : null}
-        <Route path="/laobaninfo" component={LaobanInfo}/>
-        <Route path="/dasheninfo" component={DashenInfo}/>
-        <Route path="/laoban" component={Laoban}/>
-        <Route path="/message" component={Message}/>
-        <Route path="/personal" component={Personal}/>
-        {currNav ? <Footer navList={this.navList}/> : null}
+        {currNav ? <NavBar className="nav-bar">{currNav.title}</NavBar> : null}
+        <div className='main-content'>
+          <Route path="/laobaninfo" component={LaobanInfo}/>
+          <Route path="/dasheninfo" component={DashenInfo}/>
+          <Route path="/laoban" component={Laoban}/>
+          <Route path="/message" component={Message}/>
+          <Route path="/personal" component={Personal}/>
+        </div>
+        {currNav ? <Footer navList={this.navList} type={this.props.user.type}/> : null}
       </div>
     )
   }

@@ -9,7 +9,8 @@ const Item = TabBar.Item;
 
 class Footer extends Component {
   static propTypes = {
-    navList: PropTypes.array.isRequired
+    navList: PropTypes.array.isRequired,
+    type: PropTypes.string.isRequired
   }
   
   redirectTo = path => {
@@ -18,9 +19,7 @@ class Footer extends Component {
   
   render () {
     //通过redux获取type
-    const type = 'laoban';
-    
-    const filter = type === 'laoban' ? '/dashen' : '/laoban';
+    const filter = this.props.type === 'laoban' ? '/dashen' : '/laoban';
     //过滤掉老板或大神的数据
     const currNavList = this.props.navList.filter(item => filter === item.path ? false : true);
     
