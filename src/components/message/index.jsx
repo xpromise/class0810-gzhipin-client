@@ -24,25 +24,40 @@ class Message extends Component {
     //过滤掉相同id值，相同的id值只保留一个
     let users_id = {};
     chatMsgs.forEach(item => {
+      //找到与当前用户不同的其他用户的id
       const othersId = item.from === userid ? item.to : item.from;
+      //保证users_id对象中有且值保存一份其他用户id和对应的值
       users_id[othersId] = users[othersId];
+      //为了方便后面取id值，在给这个对象添加一个id
       users_id[othersId].id = othersId;
+      
+      const time = Date.parse(item.createTime);
+      if (users_id[othersId].time) {
+        //说明之前添加过数据，将现在的数据和之前的数据进行比较
+        if (users_id[othersId].time < time) {
+          users_id[othersId].time = time;
+          users_id[othersId].message = item.message;
+        }
+      } else {
+        users_id[othersId].time = time;
+        users_id[othersId].message = item.message;
+      }
     })
     //将对象变成数组
-    const arr = Object.values(users_id);  // [{header, username, id}]
+    const chatList = Object.values(users_id);  // [{header, username, id}]
     
     return (
       <List className="my-list">
         {
-          arr.map((item, index) => (
+          chatList.map((item, index) => (
             <Item
               key={index}
-              thumb={require(`../../assets/images/头像${(item.header === 'undefined' ? 0 : +item.header) + 1}.png`)}
+              thumb={require(`../../assets/images/头像${(item.header === 'undefined' ? 0 : + item.header) + 1}.png`)}
               multipleLine
               arrow="horizontal"
               onClick={this.goChat.bind(null, item.id)}
             >
-              今天天气真晴朗 <Brief>{item.username}</Brief>
+              {item.message} <Brief>{item.username}</Brief>
             </Item>
           ))
         }

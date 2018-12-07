@@ -36,7 +36,6 @@ class Main extends Component {
     this.props.getChatList();
   }
   
-  
   render () {
     /*
       1. 判断本地有没有cookie，如果没有，直接去登录页面

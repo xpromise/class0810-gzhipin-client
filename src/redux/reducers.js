@@ -11,7 +11,8 @@ import {
   UPDATE_USER_LIST,
   RESET_USER_LIST,
   RESET_CHAT_MESSAGES,
-  GET_CHAT_MESSAGES
+  GET_CHAT_MESSAGES,
+  UPDATE_CHAT_MESSAGES
 } from './action-types';
 
 //初始化状态的值
@@ -65,6 +66,11 @@ function chatMessages(previousState = initChatMessagesState, action) {
       return action.data;
     case RESET_CHAT_MESSAGES :
       return initChatMessagesState;
+    case UPDATE_CHAT_MESSAGES :
+      return {
+        users: previousState.users,
+        chatMsgs: [...previousState.chatMsgs, action.data]
+      };
     default :
       return previousState;
   }
