@@ -9,6 +9,9 @@ import Login from './containers/login';
 import Register from './containers/register';
 import Main from './containers/main';
 
+//测试socketio
+import './test/socketio_test';
+
 import './assets/less/index.less';
 
 ReactDOM.render((
