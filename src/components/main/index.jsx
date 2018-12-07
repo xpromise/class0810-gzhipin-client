@@ -9,17 +9,19 @@ import LaobanInfo from '../../containers/laoban-info';
 import DashenInfo from '../../containers/dashen-info';
 import Laoban from '../../containers/laoban';
 import Dashen from '../../containers/dashen';
-import Message from '../message';
+import Message from '../../containers/message';
 import Personal from '../../containers/personal';
 import Footer from '../footer';
 import Chat from '../../containers/chat';
 
 import './index.less';
+import {getChatList} from "../../redux/actions";
 
 class Main extends Component {
   static propTypes = {
     user: PropTypes.object.isRequired,
-    getUserInfo: PropTypes.func.isRequired
+    getUserInfo: PropTypes.func.isRequired,
+    getChatList: PropTypes.func.isRequired
   }
   
   navList = [
@@ -28,6 +30,11 @@ class Main extends Component {
     {path: '/message', title: '消息列表', icon: 'message', text: '消息'},
     {path: '/personal', title: '个人中心', icon: 'personal', text: '个人'},
   ]
+  
+  componentDidMount () {
+    //请求所有关于此用户的消息的数据
+    this.props.getChatList();
+  }
   
   
   render () {
