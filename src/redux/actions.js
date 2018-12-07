@@ -6,6 +6,7 @@
     2. 异步action creator
       返回值是函数 dispatch => {xxx}
  */
+import io from 'socket.io-client';
 import {reqRegister, reqLogin, reqUpdate, reqGetUserInfo, reqGetUserList} from '../api';
 import {
   AUTH_SUCCESS,
@@ -146,5 +147,20 @@ export const getUserList = type => {
       .catch(err => {
         dispatch(resetUserList())
       })
+  }
+}
+
+//保证和服务器的链接只连接一次
+const socket = io('ws://localhost:5000');
+//保证只绑定一次
+socket.on('receiveMsg', function (data) {
+  console.log('浏览器端接收到服务器发送的消息:', data)
+})
+
+export const sendMessage = ({message, from, to}) => {
+  return dispatch => {
+    //向服务器发送了一条消息
+    socket.emit('sendMsg', {message, from, to})
+    console.log('浏览器端向服务器发送消息:', {message, from, to})
   }
 }

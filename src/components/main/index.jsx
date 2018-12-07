@@ -12,6 +12,7 @@ import Dashen from '../../containers/dashen';
 import Message from '../message';
 import Personal from '../../containers/personal';
 import Footer from '../footer';
+import Chat from '../../containers/chat';
 
 import './index.less';
 
@@ -70,6 +71,7 @@ class Main extends Component {
           <Route path="/dashen" component={Dashen}/>
           <Route path="/message" component={Message}/>
           <Route path="/personal" component={Personal}/>
+          <Route path="/chat/:id" component={Chat}/>
         </div>
         {currNav ? <Footer navList={this.navList} type={this.props.user.type}/> : null}
       </div>
