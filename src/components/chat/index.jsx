@@ -3,7 +3,7 @@
  */
 
 import React, {Component} from 'react'
-import {NavBar, List, InputItem, Icon} from 'antd-mobile';
+import {NavBar, List, InputItem, Icon, Grid} from 'antd-mobile';
 import PropTypes from 'prop-types';
 import Cookies from 'js-cookie';
 
@@ -18,11 +18,29 @@ export default class Chat extends Component {
   }
   
   state = {
-    message: ''
+    message: '',
+    isShow: false
   }
   
   goBack = () => {
     this.props.history.goBack();
+  }
+  
+  componentWillMount () {
+    const emojis = ['😀', '😁', '🤣','😀', '😁', '🤣','😀', '😁', '🤣','😀', '😁', '🤣','😀'
+      ,'😁', '🤣','😀', '😁', '🤣','😀', '😁', '🤣','😀', '😁', '🤣'
+      ,'😁', '🤣','😀', '😁', '🤣','😀', '😁', '🤣','😀', '😁', '🤣'
+      ,'😁', '🤣','😀', '😁', '🤣','😀', '😁', '🤣','😀', '😁', '🤣', '🙉'];
+  
+    this.emojis = emojis.map(item => ({text: item}));
+  }
+  
+  componentDidMount () {
+    window.scrollTo(0, document.body.offsetHeight);
+  }
+  
+  componentDidUpdate () {
+    window.scrollTo(0, document.body.offsetHeight);
   }
   
   sendMessage = () => {
@@ -34,11 +52,27 @@ export default class Chat extends Component {
     const {message} = this.state;
     //发送消息
     this.props.sendMessage({message, from, to});
+    //清空用户输入，清空状态
+    this.setState({message: ''});
   }
   
   handleChange = val => {
     this.setState({message: val});
   }
+  
+  toggleShow = () => {
+    const {isShow} = this.state;
+    this.setState({
+      isShow: !isShow
+    })
+    //解决轮播图显示高度异常的问题
+    if (!isShow) {
+      setTimeout(function () {
+        window.dispatchEvent(new Event('resize'));
+      }, 0)
+    }
+  }
+  
   
   render() {
     const {users, chatMsgs} = this.props.chatMessages;
@@ -64,8 +98,8 @@ export default class Chat extends Component {
     
     return (
       <div id='chat-page'>
-        <NavBar  icon={<Icon type="left" onClick={this.goBack}/>}>{others.username}</NavBar>
-        <List>
+        <NavBar style={{position: 'fixed', left: 0, top: 0, zIndex: 50, width: '100%'}} icon={<Icon type="left" onClick={this.goBack}/>}>{others.username}</NavBar>
+        <List style={{marginTop: '96px'}}>
           {
             currMsgs.map((item, index) => {
               //判断消息a-->b 还是 b -->a
@@ -93,15 +127,33 @@ export default class Chat extends Component {
           }
         </List>
         
+        <div style={{height: this.state.isShow ? '180px' : 0}}></div>
+        
         <div className='am-tab-bar'>
           <InputItem
             placeholder="请输入"
             onChange={this.handleChange}
             extra={
-              <span onClick={this.sendMessage}>发送</span>
+              <div>
+                <span onClick={this.toggleShow}>🙉</span> &nbsp;&nbsp;
+                <span onClick={this.sendMessage}>发送</span>
+              </div>
             }
+            value={this.state.message}
           />
+          {
+            this.state.isShow
+              ? <Grid
+                data={this.emojis}
+                isCarousel
+                columnNum={8}
+                carouselMaxRow={4}
+                onClick={el => {this.setState({message: this.state.message + el.text})}}
+              />
+              : null
+          }
         </div>
+  
       </div>
     )
   }
