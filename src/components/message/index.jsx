@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { List } from 'antd-mobile';
+import { List, Badge } from 'antd-mobile';
 import Cookies from "js-cookie";
 import PropTypes from 'prop-types';
 
@@ -27,7 +27,13 @@ class Message extends Component {
       //找到与当前用户不同的其他用户的id
       const othersId = item.from === userid ? item.to : item.from;
       //保证users_id对象中有且值保存一份其他用户id和对应的值
-      users_id[othersId] = users[othersId];
+      //保证新对象不会修改原对象
+      if (!users_id[othersId]) {
+        users_id[othersId] = {};
+      }
+      for (let key in users[othersId]) {
+        users_id[othersId][key] = users[othersId][key];
+      }
       //为了方便后面取id值，在给这个对象添加一个id
       users_id[othersId].id = othersId;
       
@@ -41,6 +47,13 @@ class Message extends Component {
       } else {
         users_id[othersId].time = time;
         users_id[othersId].message = item.message;
+      }
+      //展示单个列表的未读消息
+      if (!users_id[othersId].unRead) {
+        users_id[othersId].unRead = 0;
+      }
+      if (item.from === othersId && !item.read) {
+        users_id[othersId].unRead++;
       }
     })
     //将对象变成数组
@@ -56,6 +69,7 @@ class Message extends Component {
               multipleLine
               arrow="horizontal"
               onClick={this.goChat.bind(null, item.id)}
+              extra={<Badge text={item.unRead}/>}
             >
               {item.message} <Brief>{item.username}</Brief>
             </Item>
