@@ -6,9 +6,9 @@ import ajax from './ajax';
 
 //接口前缀
 //正常请求的配置
-// const prefix = 'http://localhost:4000';
+const prefix = 'http://localhost:4000';
 //代理服务器需要的配置
-const prefix = '';
+// const prefix = '';
 
 //定义注册的请求
 export const reqRegister = data => ajax(`${prefix}/register`, data, 'POST');
@@ -22,3 +22,5 @@ export const reqGetUserInfo = () => ajax(`${prefix}/user`);
 export const reqGetUserList = type => ajax(`${prefix}/userlist`, {type});
 //定义获取用户消息列表的请求
 export const reqGetChatList = () => ajax(`${prefix}/msglist`);
+//定义更新用户未读消息的请求
+export const reqUpdateUnReadMessage = from => ajax(`${prefix}/readmsg`, {from}, 'POST');

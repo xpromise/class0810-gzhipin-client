@@ -14,7 +14,8 @@ const Item = List.Item;
 export default class Chat extends Component {
   static propTypes = {
     sendMessage: PropTypes.func.isRequired,
-    chatMessages: PropTypes.object.isRequired
+    chatMessages: PropTypes.object.isRequired,
+    updateUnReadMessage: PropTypes.func.isRequired,
   }
   
   state = {
@@ -24,6 +25,11 @@ export default class Chat extends Component {
   
   goBack = () => {
     this.props.history.goBack();
+  }
+  
+  componentWillUnmount () {
+    //更新用户未读消息的数量
+    this.props.updateUnReadMessage(this.props.match.params.id);
   }
   
   componentWillMount () {

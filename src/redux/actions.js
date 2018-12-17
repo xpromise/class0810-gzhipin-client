@@ -7,7 +7,7 @@
       返回值是函数 dispatch => {xxx}
  */
 import io from 'socket.io-client';
-import {reqRegister, reqLogin, reqUpdate, reqGetUserInfo, reqGetUserList, reqGetChatList} from '../api';
+import {reqRegister, reqLogin, reqUpdate, reqGetUserInfo, reqGetUserList, reqGetChatList, reqUpdateUnReadMessage} from '../api';
 import {
   AUTH_SUCCESS,
   AUTH_ERROR,
@@ -17,7 +17,8 @@ import {
   UPDATE_USER_LIST,
   GET_CHAT_MESSAGES,
   RESET_CHAT_MESSAGES,
-  UPDATE_CHAT_MESSAGES
+  UPDATE_CHAT_MESSAGES,
+  UPDATE_UNREAD_COUNT
 } from './action-types';
 //定义同步action creator
 export const authSuccess = data => ({type: AUTH_SUCCESS, data});
@@ -32,6 +33,7 @@ export const resetUserList = () => ({type: RESET_USER_LIST});
 export const getChatMessages = data => ({type: GET_CHAT_MESSAGES, data});
 export const resetChatMessages = () => ({type: RESET_CHAT_MESSAGES});
 export const updateChatMessages = data => ({type: UPDATE_CHAT_MESSAGES, data});
+export const updateUnReadCount = data => ({type: UPDATE_UNREAD_COUNT, data});
 
 //定义异步action creator
 export const register = ({username, password, rePassword, type}) => {
@@ -158,7 +160,7 @@ export const getUserList = type => {
 }
 
 //保证和服务器的链接只连接一次
-const socket = io('ws://localhost:5000');
+const socket = io('ws://localhost:5001');
 
 
 export const sendMessage = ({message, from, to}) => {
@@ -166,7 +168,12 @@ export const sendMessage = ({message, from, to}) => {
     //向服务器发送了一条消息
     socket.emit('sendMsg', {message, from, to})
     console.log('浏览器端向服务器发送消息:', {message, from, to})
-  
+    
+  }
+}
+
+export const getChatList = () => {
+  return dispatch => {
     //保证只绑定一次
     if (!socket.isFirst) {
       socket.isFirst = true;
@@ -176,15 +183,27 @@ export const sendMessage = ({message, from, to}) => {
         dispatch(updateChatMessages(data))
       })
     }
-  }
-}
-
-export const getChatList = () => {
-  return dispatch => {
+    
     reqGetChatList()
       .then(({data}) => {
         if (data.code === 0) {
           dispatch(getChatMessages(data.data));
+        } else {
+          dispatch(resetChatMessages());
+        }
+      })
+      .catch(err => {
+        dispatch(resetChatMessages());
+      })
+  }
+}
+
+export const updateUnReadMessage = from => {
+  return dispatch => {
+    reqUpdateUnReadMessage(from)
+      .then(({data}) => {
+        if (data.code === 0) {
+          dispatch(updateUnReadCount({count: data.data, from}));
         } else {
           dispatch(resetChatMessages());
         }

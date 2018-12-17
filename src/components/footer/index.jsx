@@ -10,7 +10,8 @@ const Item = TabBar.Item;
 class Footer extends Component {
   static propTypes = {
     navList: PropTypes.array.isRequired,
-    type: PropTypes.string.isRequired
+    type: PropTypes.string.isRequired,
+    unReadCount: PropTypes.number.isRequired,
   }
   
   redirectTo = path => {
@@ -33,6 +34,7 @@ class Footer extends Component {
             onPress={this.redirectTo.bind(null, item.path)}
             selected={this.props.location.pathname === item.path}
             selectedIcon={<img className="footer-img" src={require(`./images/${item.icon}-selected.png`)} alt={item.text}/>}
+            badge={item.path === '/message' ? this.props.unReadCount : 0}
           />)
         }
       </TabBar>

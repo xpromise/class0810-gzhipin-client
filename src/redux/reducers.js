@@ -2,6 +2,7 @@
   作用：根据之前的状态（previousState）和更新数据的行为（action）产生一个新的状态（newState）
  */
 import {combineReducers} from 'redux';
+import Cookies from 'js-cookie';
 
 import {
   AUTH_SUCCESS,
@@ -12,7 +13,8 @@ import {
   RESET_USER_LIST,
   RESET_CHAT_MESSAGES,
   GET_CHAT_MESSAGES,
-  UPDATE_CHAT_MESSAGES
+  UPDATE_CHAT_MESSAGES,
+  UPDATE_UNREAD_COUNT
 } from './action-types';
 
 //初始化状态的值
@@ -58,19 +60,48 @@ function userList(previousState = initUserListState, action) {
 
 const initChatMessagesState = {
   users: {},
-  chatMsgs: []
+  chatMsgs: [],
+  unReadCount: 0
 }
 function chatMessages(previousState = initChatMessagesState, action) {
+  let userid;
   switch (action.type) {
     case GET_CHAT_MESSAGES :
-      return action.data;
+      const {users, chatMsgs} = action.data;
+      userid = Cookies.get('userid');
+      return {
+        users,
+        chatMsgs,
+        unReadCount: chatMsgs.reduce((prev, curr) => {
+          return prev + (curr.to === userid && !curr.read ? 1 : 0)
+        }, 0)
+      };
     case RESET_CHAT_MESSAGES :
       return initChatMessagesState;
     case UPDATE_CHAT_MESSAGES :
+      userid = Cookies.get('userid');
+      const messages = [...previousState.chatMsgs, action.data];
       return {
         users: previousState.users,
-        chatMsgs: [...previousState.chatMsgs, action.data]
+        chatMsgs: messages,
+        unReadCount: messages.reduce((prev, curr) => {
+          return prev + (curr.to === userid && !curr.read ? 1 : 0)
+        }, 0)
       };
+    case UPDATE_UNREAD_COUNT :
+      userid = Cookies.get('userid');
+      return {
+        users: previousState.users,
+        chatMsgs: previousState.chatMsgs.map(item => {
+          if (action.data.from === item.from && item.to === userid && !item.read) {
+            // item.read = true;
+            return {...item, read: true}
+          } else {
+            return item;
+          }
+        }),
+        unReadCount: previousState.unReadCount - action.data.count
+      }
     default :
       return previousState;
   }

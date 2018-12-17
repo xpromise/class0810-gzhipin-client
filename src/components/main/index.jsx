@@ -21,7 +21,8 @@ class Main extends Component {
   static propTypes = {
     user: PropTypes.object.isRequired,
     getUserInfo: PropTypes.func.isRequired,
-    getChatList: PropTypes.func.isRequired
+    getChatList: PropTypes.func.isRequired,
+    unReadCount: PropTypes.number.isRequired,
   }
   
   navList = [
@@ -79,7 +80,7 @@ class Main extends Component {
           <Route path="/personal" component={Personal}/>
           <Route path="/chat/:id" component={Chat}/>
         </div>
-        {currNav ? <Footer navList={this.navList} type={this.props.user.type}/> : null}
+        {currNav ? <Footer navList={this.navList} type={this.props.user.type} unReadCount={this.props.unReadCount}/> : null}
       </div>
     )
   }
